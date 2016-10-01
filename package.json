@@ -1,0 +1,36 @@
+{
+  "name": "cordova-plugin-firebase-core",
+  "version": "1.0.5",
+  "description": "Adds support for Firebase to your Cordova/PhoneGap apps.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blakgeek/cordova-plugin-firebase-core.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "firebase",
+    "google",
+    "core"
+  ],
+  "author": "Carlos \"blakgeek\" Lawton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blakgeek/cordova-plugin-firebase-core/issues"
+  },
+  "homepage": "https://github.com/blakgeek/cordova-plugin-firebase-core",
+  "dependencies": {
+    "elementtree": "^0.1.6",
+    "plist": "^1.2.0",
+    "shelljs": "^0.7.2",
+    "xcode": "^0.8.9",
+    "xml2js": "^0.4.17"
+  },
+  "bundledDependencies": [
+    "plist",
+    "shelljs",
+    "xcode",
+    "xml2js"
+  ]
+}
