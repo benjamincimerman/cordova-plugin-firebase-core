@@ -1,9 +1,11 @@
 package com.blakgeek.cordova.plugin;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -15,15 +17,31 @@ import org.json.JSONObject;
 public class FirebaseCorePlugin extends CordovaPlugin {
 
     private CallbackContext eventContext;
+    private FirebaseAnalytics analytics;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         switch (action) {
             case "initialize":
                 return initialize(args, callbackContext);
+            case "logEvent":
+                return logEvent(args, callbackContext);
             default:
                 return false;
         }
+    }
+
+    private boolean logEvent(JSONArray args, CallbackContext callbackContext) {
+
+        String name = args.optString(0, "event");
+        // for now this will serialized json
+        String details = args.optString(1, "");
+        Bundle bundle = new Bundle();
+        bundle.putString("details", details);
+
+        analytics.logEvent(name, bundle);
+        callbackContext.success();
+        return true;
     }
 
     private boolean initialize(JSONArray args, CallbackContext callbackContext) {
@@ -38,6 +56,8 @@ public class FirebaseCorePlugin extends CordovaPlugin {
         } else {
             FirebaseApp.initializeApp(context, builder.build(), name);
         }
+
+        FirebaseAnalytics.getInstance(this.cordova.getActivity().getApplicationContext());
 
         if (eventContext == null) {
             eventContext = callbackContext;

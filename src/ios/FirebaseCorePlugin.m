@@ -15,4 +15,16 @@
     self.eventCallbackId = command.callbackId;
 }
 
+- (void)logEvent:(CDVInvokedUrlCommand *)command {
+
+    NSString *name = [command argumentAtIndex:0];
+    NSString *data = [command argumentAtIndex:1];
+
+    [FIRAnalytics logEventWithName:name
+                        parameters:@{
+                                     kFIRParameterContentType:@"data",
+                                     kFIRParameterItemID:data
+                                     }];
+}
+
 @end

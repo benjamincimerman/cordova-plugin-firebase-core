@@ -1,8 +1,13 @@
 var exec = require('cordova/exec');
 
-function FirebaseApp(config, name) {
+function FirebaseCore(config, name) {
 
     exec(dispatchEvent, null, 'FirebaseCorePlugin', 'initialize', [config, name]);
+
+    this.logEvent = function (name, data) {
+
+        return exec(null, null, 'FirebaseCorePlugin', 'logEvent', [name, JSON.stringify(data)]);
+    };
 
     function dispatchEvent(event) {
 
@@ -12,5 +17,5 @@ function FirebaseApp(config, name) {
 
 if (typeof module !== undefined && module.exports) {
 
-    module.exports = FirebaseApp;
+    module.exports = FirebaseCore;
 }
