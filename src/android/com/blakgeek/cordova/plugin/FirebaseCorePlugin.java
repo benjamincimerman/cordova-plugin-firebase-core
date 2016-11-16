@@ -36,7 +36,6 @@ public class FirebaseCorePlugin extends CordovaPlugin {
     private boolean logEvent(JSONArray args, CallbackContext callbackContext) {
 
         String name = args.optString(0, "event");
-        // for now this will serialized json
         JSONObject data = args.optJSONObject(1);
         Bundle bundle = new Bundle();
         Iterator<String> keys = data.keys();

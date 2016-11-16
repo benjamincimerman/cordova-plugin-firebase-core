@@ -18,13 +18,9 @@
 - (void)logEvent:(CDVInvokedUrlCommand *)command {
 
     NSString *name = [command argumentAtIndex:0];
-    NSString *data = [command argumentAtIndex:1];
+    NSDictionary *parameters = [command argumentAtIndex:1 withDefault:@{} andClass:[NSDictionary class]];
 
-    [FIRAnalytics logEventWithName:name
-                        parameters:@{
-                                     kFIRParameterContentType:@"data",
-                                     kFIRParameterItemID:data
-                                     }];
+    [FIRAnalytics logEventWithName:name parameters:parameters];
 }
 
 @end
