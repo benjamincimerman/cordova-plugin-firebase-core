@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 public class FirebaseCorePlugin extends CordovaPlugin {
 
     private CallbackContext eventContext;
@@ -35,29 +37,47 @@ public class FirebaseCorePlugin extends CordovaPlugin {
 
         String name = args.optString(0, "event");
         // for now this will serialized json
-        String details = args.optString(1, "");
+        JSONObject data = args.optJSONObject(1);
         Bundle bundle = new Bundle();
-        bundle.putString("details", details);
+        Iterator<String> keys = data.keys();
+        while(keys.hasNext()) {
 
-        analytics.logEvent(name, bundle);
+            String key = keys.next();
+            Object value;
+            try {
+                value = data.get(key);
+                if(value instanceof Number) {
+                    bundle.putDouble(key, new Double(value.toString()));
+                } else if(value instanceof Boolean) {
+                    bundle.putBoolean(key, (Boolean) value);
+                } else {
+                    bundle.putString(key, value.toString());
+                }
+            } catch (JSONException e) {
+                // who cares this error is stupid
+            }
+        }
+
+        getAnalytics().logEvent(name, bundle);
         callbackContext.success();
         return true;
     }
 
     private boolean initialize(JSONArray args, CallbackContext callbackContext) {
 
-        JSONObject options = args.optJSONObject(1);
         String name = args.optString(1);
         Context context = this.cordova.getActivity().getApplicationContext();
         FirebaseOptions.Builder builder = new FirebaseOptions.Builder();
 
-        if("".equals(name)) {
-            FirebaseApp.initializeApp(context, builder.build());
-        } else {
-            FirebaseApp.initializeApp(context, builder.build(), name);
+        try {
+            if ("".equals(name)) {
+                FirebaseApp.initializeApp(context, builder.build());
+            } else {
+                FirebaseApp.initializeApp(context, builder.build(), name);
+            }
+        } catch (IllegalStateException ex) {
+            // ignore and keep it movin
         }
-
-        FirebaseAnalytics.getInstance(this.cordova.getActivity().getApplicationContext());
 
         if (eventContext == null) {
             eventContext = callbackContext;
@@ -84,6 +104,15 @@ public class FirebaseCorePlugin extends CordovaPlugin {
             result.setKeepCallback(true);
             eventContext.sendPluginResult(result);
         }
+    }
+
+    private FirebaseAnalytics getAnalytics() {
+
+        if(analytics == null) {
+            analytics = FirebaseAnalytics.getInstance(this.cordova.getActivity().getApplicationContext());
+        }
+
+        return analytics;
     }
 }
 

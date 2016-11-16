@@ -6,7 +6,25 @@ function FirebaseCore(config, name) {
 
     this.logEvent = function (name, data) {
 
-        return exec(null, null, 'FirebaseCorePlugin', 'logEvent', [name, JSON.stringify(data)]);
+
+        var parameters = {};
+        var key;
+
+        if(typeof data !== 'object') {
+            parameters.value = data
+        } else {
+
+            for(key in data) {
+                parameters[key.replace(/[^\w_]+/g, '_')] = data[key];
+            }
+        }
+
+        if (name) {
+            exec(null, null, 'FirebaseCorePlugin', 'logEvent', [
+                name.replace(/[^\w_]+/g, '_'),
+                parameters
+            ]);
+        }
     };
 
     function dispatchEvent(event) {
