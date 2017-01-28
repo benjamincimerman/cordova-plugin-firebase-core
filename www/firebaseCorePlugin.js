@@ -1,8 +1,29 @@
 var exec = require('cordova/exec');
 
-function FirebaseCore(config, name) {
+function FirebaseCorePlugin(config, name) {
+
+    var PLUGIN_NAME = 'FirebaseCorePlugin';
 
     exec(dispatchEvent, null, 'FirebaseCorePlugin', 'initialize', [config, name]);
+
+    this.setUserProperty = function (name, value) {
+
+        if (name) {
+            exec(null, null, PLUGIN_NAME, 'setUserProperty', [name, value]);
+        }
+    };
+
+    this.clearUserProperties = function() {
+
+    };
+
+    this.setUserId = function(id) {
+
+    };
+
+    this.clearUserId = function() {
+
+    };
 
     this.logEvent = function (name, data) {
 
@@ -10,30 +31,34 @@ function FirebaseCore(config, name) {
         var parameters = {};
         var key;
 
-        if(typeof data !== 'object') {
+        if (typeof data !== 'object') {
             parameters.value = data
         } else {
 
-            for(key in data) {
+            for (key in data) {
                 parameters[key.replace(/[^\w_]+/g, '_')] = data[key];
             }
         }
 
         if (name) {
-            exec(null, null, 'FirebaseCorePlugin', 'logEvent', [
+            exec(null, null, PLUGIN_NAME, 'logEvent', [
                 name.replace(/[^\w_]+/g, '_'),
                 parameters
             ]);
         }
     };
 
-    function dispatchEvent(event) {
+    function dispatchEvent(config) {
 
-        window.dispatchEvent(new CustomEvent(event.type, {detail: event.data}));
+        var event = new Event(config.type);
+        var prop;
+        if (config.data) {
+            for (prop in config.data) {
+                event[prop] = config.data[prop];
+            }
+        }
+        window.dispatchEvent(event);
     }
 }
 
-if (typeof module !== undefined && module.exports) {
-
-    module.exports = FirebaseCore;
-}
+module.exports = FirebaseCorePlugin;

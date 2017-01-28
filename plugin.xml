@@ -11,6 +11,7 @@
 
     <js-module src="www/firebaseCorePlugin.js" name="FirebaseCorePlugin">
         <clobbers target="FirebaseCore" />
+        <clobbers target="FirebaseCorePlugin" />
     </js-module>
 
     <engines>
@@ -43,7 +44,7 @@
         </config-file>
 
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference" />
-        <framework src="com.google.firebase:firebase-core:9.4+" />
+        <framework src="com.google.firebase:firebase-core:+" />
 
         <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseCorePlugin.java"
             target-dir="src/com/blakgeek/cordova/plugin/" />
