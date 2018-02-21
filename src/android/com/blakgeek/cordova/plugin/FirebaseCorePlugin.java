@@ -28,9 +28,31 @@ public class FirebaseCorePlugin extends CordovaPlugin {
                 return initialize(args, callbackContext);
             case "logEvent":
                 return logEvent(args, callbackContext);
+            case "setUserProperty":
+                return setUserProperty(args);
+            case "setUserId":
+                return setUserId(args);
             default:
                 return false;
         }
+    }
+
+    private boolean setUserId(JSONArray args) {
+
+        String id = args.optString(0, null);
+        getAnalytics().setUserId(id);
+
+        return true;
+    }
+
+    private boolean setUserProperty(JSONArray args) {
+
+        String property = args.optString(0);
+        String value = args.optString(1);
+
+        getAnalytics().setUserProperty(property, value);
+
+        return true;
     }
 
     private boolean logEvent(JSONArray args, CallbackContext callbackContext) {
@@ -47,8 +69,6 @@ public class FirebaseCorePlugin extends CordovaPlugin {
                 value = data.get(key);
                 if(value instanceof Number) {
                     bundle.putDouble(key, new Double(value.toString()));
-                } else if(value instanceof Boolean) {
-                    bundle.putBoolean(key, (Boolean) value);
                 } else {
                     bundle.putString(key, value.toString());
                 }

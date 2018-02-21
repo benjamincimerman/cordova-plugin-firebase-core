@@ -19,10 +19,12 @@ function FirebaseCorePlugin(config, name) {
 
     this.setUserId = function(id) {
 
+        exec(null, null, PLUGIN_NAME, 'setUserId', [id || null]);
     };
 
     this.clearUserId = function() {
 
+        exec(null, null, PLUGIN_NAME, 'setUserId', [null]);
     };
 
     this.logEvent = function (name, data) {

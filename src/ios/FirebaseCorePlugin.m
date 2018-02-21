@@ -15,6 +15,21 @@
     self.eventCallbackId = command.callbackId;
 }
 
+- (void)setUserId:(CDVInvokedUrlCommand *)command {
+
+    NSString *id = [command argumentAtIndex:0];
+
+    [FIRAnalytics setUserID:id];
+}
+
+- (void)setUserProperty:(CDVInvokedUrlCommand *)command {
+
+    NSString *name = [command argumentAtIndex:0];
+    NSString *value = [command argumentAtIndex:1];
+
+    [FIRAnalytics setUserPropertyString:value forName:name];
+}
+
 - (void)logEvent:(CDVInvokedUrlCommand *)command {
 
     NSString *name = [command argumentAtIndex:0];
