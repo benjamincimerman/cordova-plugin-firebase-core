@@ -21,7 +21,6 @@
 
     <dependency id="cordova-plugin-cocoapod-support"/>
 
-    <hook type="before_plugin_install" src="hooks/npm-install.js"/>
     <hook type="after_prepare" src="hooks/configure-ios.js"/>
     <hook type="after_prepare" src="hooks/configure-android.js"/>
 
@@ -37,6 +36,9 @@
     </platform>
 
     <platform name="android">
+
+        <preference name="FIREBASE_VERSION" default="18.+"/>
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseCorePlugin">
                 <param name="android-package" value="com.blakgeek.cordova.plugin.FirebaseCorePlugin"/>
@@ -44,7 +46,7 @@
         </config-file>
 
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
-        <framework src="com.google.firebase:firebase-core:+"/>
+        <framework src="com.google.firebase:firebase-core:$FIREBASE_VERSION"/>
 
         <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseCorePlugin.java" target-dir="src/com/blakgeek/cordova/plugin/"/>
         <config-file target="AndroidManifest.xml" parent="/*">
