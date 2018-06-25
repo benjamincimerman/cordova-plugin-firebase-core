@@ -3,6 +3,8 @@ package com.blakgeek.cordova.plugin;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -100,6 +102,11 @@ public class FirebaseCorePlugin extends CordovaPlugin {
 
         if (eventContext == null) {
             eventContext = callbackContext;
+        }
+
+        int googlePlayAvailabilityStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable( context);
+        if(googlePlayAvailabilityStatus == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED){
+            raiseEvent("googlePlayServiceUpdateRequired");
         }
         return true;
     }
