@@ -37,7 +37,7 @@
 
     <platform name="android">
 
-        <preference name="FIREBASE_VERSION" default="16.+"/>
+        <preference name="FIREBASE_CORE_VERSION" default="16.+"/>
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseCorePlugin">
@@ -46,7 +46,7 @@
         </config-file>
 
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
-        <framework src="com.google.firebase:firebase-core:$FIREBASE_VERSION"/>
+        <framework src="com.google.firebase:firebase-core:$FIREBASE_CORE_VERSION"/>
 
         <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseCorePlugin.java" target-dir="src/com/blakgeek/cordova/plugin/"/>
         <config-file target="AndroidManifest.xml" parent="/*">
