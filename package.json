@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-firebase-core",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Adds support for Firebase to your Cordova/PhoneGap apps.",
   "repository": {
     "type": "git",
