@@ -14,10 +14,12 @@ module.exports = function (context) {
 
     var appPackage = getConfigParser(context, 'config.xml').packageName();
     var rootPath = context.opts.projectRoot;
+    const usesNewStructure = fs.existsSync(path.join(rootPath, 'platforms', 'android', 'app'));
+    const baseDestPath = usesNewStructure ? path.join(rootPath, 'platforms', 'android', 'app', 'src', 'main') : path.join(rootPath, 'platforms', 'android');
     var googleServicesJsonSrcPath = path.join(rootPath, 'google-services.json');
-    var googleServicesJsonDestPath = path.join(rootPath, 'platforms', 'android', 'google-services.json');
+    var googleServicesJsonDestPath = path.join(baseDestPath, 'google-services.json');
     var googleServicesJsonExists = fs.existsSync(googleServicesJsonSrcPath);
-    var outputXmlPath = path.join(rootPath, 'platforms', 'android', 'res', 'values', 'google-services.xml');
+    var outputXmlPath = path.join(baseDestPath, 'res', 'values', 'google-services.xml');
     var googleServicesJsonChanged = filesDiffer(googleServicesJsonSrcPath, googleServicesJsonDestPath);
 
     if (googleServicesJsonExists && googleServicesJsonChanged) {
